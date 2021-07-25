@@ -12,4 +12,5 @@ export interface Configuration {
 	IGT: boolean
 	ACTION_BAR_IGT: boolean
 	ALTERNATIVE_START: boolean
+	FSG_TYPE: string
 }

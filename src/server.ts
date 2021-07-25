@@ -1,4 +1,4 @@
-import { ChildProcess, spawn } from "child_process"
+import { ChildProcess, spawn, execSync } from "child_process"
 import shell from "shelljs"
 import { parseConfiguration } from "./adapter/configuration"
 import { initSeed, setWorld } from "./adapter/serverProperties"
@@ -8,13 +8,19 @@ async function startServer() {
 	setupErrorListeners()
 
 	const configuration = await parseConfiguration()
-	const { MIN_RAM, MAX_RAM, OP, WHITELIST, DATA_PACK, SEEDS, AUTO_SAVE, KEEP_WORLDS, LOAD_WORLD, AUTO_RESTART, IGT, ACTION_BAR_IGT, ALTERNATIVE_START } = configuration
+	const { MIN_RAM, MAX_RAM, OP, WHITELIST, DATA_PACK, SEEDS, AUTO_SAVE, KEEP_WORLDS, LOAD_WORLD, AUTO_RESTART, IGT, ACTION_BAR_IGT, ALTERNATIVE_START, FSG_TYPE } = configuration
 
 	var time = null
 	var endCheck = null
 	var timerUpdate = null
 	var endVisited = false
 	var runDone = false
+	var fsgData
+
+	if (FSG_TYPE) {
+		const seedData = execSync('cd FSG/' + FSG_TYPE + ' & bash ./findSeed.sh').toString()
+		fsgData = [seedData.split('\nSeed: ')[1].split('\n')[0], seedData.split('\nVerification Token:\n')[1].split('\n')[0]]
+	}
 
 	if (LOAD_WORLD) {
 		await setWorld(LOAD_WORLD)
@@ -24,7 +30,7 @@ async function startServer() {
 		} else {
 			deleteWorldFolder()
 		}
-		await initSeed(SEEDS, configuration)
+		await initSeed(FSG_TYPE ? [fsgData[0]] : SEEDS, configuration)
 	}
 
 	const server = spawn("java", [`-Xms${MIN_RAM}G`, `-Xmx${MAX_RAM}G`, "-jar", "server.jar", "nogui"])
@@ -51,6 +57,8 @@ async function startServer() {
 				shell.cp("-Rf", "datapacks/.", "world/datapacks")
 				server.stdin.write("/reload\n")
 			}
+		} else if (FSG_TYPE && data.includes('joined the game')) {
+			setTimeout(async function(){server.stdin.write(`/tellraw @a {"text":"§dVerifcation Token: §a` + fsgData[1] + `","clickEvent":{"action":"copy_to_clipboard","value":"` + fsgData[1] + `"},"hoverEvent":{"action":"show_text","contents":["§aCopy to clipboard"]}}\n`)}, 1)
 		} else if (IGT) {
 			if (data.includes('Set the time to 0') && !runDone) {
 				time = Date.now();

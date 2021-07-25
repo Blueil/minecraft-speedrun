@@ -11,5 +11,6 @@
 	"AUTO_RESTART": true,
 	"IGT": true,
 	"ACTION_BAR_IGT": true,
-	"ALTERNATIVE_START": true
+	"ALTERNATIVE_START": true,
+    "FSG_TYPE": ""
 }
