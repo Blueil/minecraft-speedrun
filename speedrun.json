@@ -1,0 +1,15 @@
+{
+    "MIN_RAM": 8,
+    "MAX_RAM": 10,
+    "OP": ["Notch"],
+    "WHITELIST": ["Notch"],
+    "DATA_PACK": false,
+    "SEEDS": ["-9223372036854775808", "9223372036854775807"],
+    "AUTO_SAVE": false,
+    "KEEP_WORLDS": false,
+    "LOAD_WORLD": "",
+	"AUTO_RESTART": true,
+	"IGT": true,
+	"ACTION_BAR_IGT": true,
+	"ALTERNATIVE_START": true
+}
