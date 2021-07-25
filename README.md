@@ -1,4 +1,5 @@
 # Minecraft Speedrun Server
+This is a fork of https://github.com/NearW/minecraft-speedrun with more features
 
 This project provides a better startup for a speedrun server as it can automatically:
 
@@ -9,6 +10,9 @@ This project provides a better startup for a speedrun server as it can automatic
 -   Move datapacks to the world folder
 -   Set the seed from a list of seeds sequentially
 -   Load a specific world for All Advancement runs
+-   IGT Timer
+-   IGT Timer in actionbar
+-   IGT start when "start run" is typed in chat
 
 ## Prerequisites
 
@@ -39,7 +43,11 @@ _Note: Enabling flight will prevent random disconnects when traveling too fast v
     "SEEDS": ["-9223372036854775808", "9223372036854775807"], // List of set seeds that are played one by one, set [] to disable this option
     "AUTO_SAVE":  false, // Turn off to prevent 5 minute lag, default false
     "KEEP_WORLDS":  false, // Turn on if worlds should be renamed instead of deleted, default false
-    "LOAD_WORLD": "world_2021-05-21_15-31-24" // Default: "". Set world folder name that should be loaded on server start instead of deleting/archiving the world.
+    "LOAD_WORLD": "world_2021-05-21_15-31-24", // Default: "". Set world folder name that should be loaded on server start instead of deleting/archiving the world.
+    "AUTO_RESTART": false, // Turn on to make the server restart when stopped
+    "IGT": true, // Turn on to make the server take times when "/time set 0" is done
+    "ACTION_BAR_IGT" : true, // Turn on to make the igt time show in the auction bar, IGT must be on for this to work. recommended to use it with ALTERNATIVE_START and without op players
+    "ALTERNATIVE_START" : true // Turn on to make the server start the timer and type "/time set 0" when a player type in chat "start run", IGT must be on for this to work. recommended to use when ACTION_BAR_IGT is on
 }
 ```
 
