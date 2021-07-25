@@ -13,6 +13,7 @@ This project provides a better startup for a speedrun server as it can automatic
 -   IGT Timer
 -   IGT Timer in actionbar
 -   Start IGT timer when "start run" is typed in chat
+-   FSG support
 
 ## Prerequisites
 
@@ -47,7 +48,8 @@ _Note: Enabling flight will prevent random disconnects when traveling too fast v
     "AUTO_RESTART": false, // Turn on to make the server restart when stopped
     "IGT": true, // Turn on to make the server take times when "/time set 0" is done
     "ACTION_BAR_IGT" : true, // Turn on to make the igt time show in the auction bar, IGT must be on for this to work. recommended to use it with ALTERNATIVE_START and without op players
-    "ALTERNATIVE_START" : true // Turn on to make the server start the timer and type "/time set 0" when a player type in chat "start run", IGT must be on for this to work. recommended to use when ACTION_BAR_IGT is on
+    "ALTERNATIVE_START" : true, // Turn on to make the server start the timer and type "/time set 0" when a player type in chat "start run", IGT must be on for this to work. recommended to use when ACTION_BAR_IGT is on
+    "FSG_TYPE" : "podland" // Default: "". Which generator to use from the FSG generators in the FSG folder in the root folder (you need to create the folder). Leave it empty to not use any FSG generator
 }
 ```
 
