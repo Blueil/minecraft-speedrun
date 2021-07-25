@@ -8,7 +8,7 @@ async function startServer() {
 	setupErrorListeners()
 
 	const configuration = await parseConfiguration()
-	const { MIN_RAM, MAX_RAM, OP, WHITELIST, DATA_PACK, SEEDS, AUTO_SAVE, KEEP_WORLDS, LOAD_WORLD, AUTO_RESTART, IGT, AUCTION_BAR_IGT, ALTERNATIVE_START } = configuration
+	const { MIN_RAM, MAX_RAM, OP, WHITELIST, DATA_PACK, SEEDS, AUTO_SAVE, KEEP_WORLDS, LOAD_WORLD, AUTO_RESTART, IGT, ACTION_BAR_IGT, ALTERNATIVE_START } = configuration
 
 	var time = null
 	var endCheck = null
@@ -55,7 +55,7 @@ async function startServer() {
 			if (data.includes('Set the time to 0') && !runDone) {
 				time = Date.now();
 				server.stdin.write(`/tellraw @a "§dTime started at §a` + new Date().toLocaleTimeString() + `"\n`)
-				if (AUCTION_BAR_IGT) timerUpdate = setInterval(async function(){server.stdin.write(`/title @a actionbar "§dTime: §a` + msToTime(Date.now() - time, false) + `"\n`)}, 1000)
+				if (ACTION_BAR_IGT) timerUpdate = setInterval(async function(){server.stdin.write(`/title @a actionbar "§dTime: §a` + msToTime(Date.now() - time, false) + `"\n`)}, 1000)
 			} else if (ALTERNATIVE_START && data.includes('start run') && !runDone) {
 				server.stdin.write(`/time set 0t\n`)
 			} else if (data.includes('has made the advancement [The End?]') && !endVisited) {
@@ -64,7 +64,7 @@ async function startServer() {
 			} else if (data.includes('Test passed') && !runDone) {
 				runDone = true
 				clearInterval(endCheck)
-				if (AUCTION_BAR_IGT) clearInterval(timerUpdate)
+				if (ACTION_BAR_IGT) clearInterval(timerUpdate)
 				server.stdin.write(`/tellraw @a "§dTime ended at §a` + msToTime(Date.now() - time, true) + `"\n`)
 			}
 		}
@@ -72,7 +72,7 @@ async function startServer() {
 
 	server.on("exit", async () => {
 		clearInterval(endCheck)
-		if (AUCTION_BAR_IGT) clearInterval(timerUpdate)
+		if (ACTION_BAR_IGT) clearInterval(timerUpdate)
 		server.kill()
 		if (AUTO_RESTART) await startServer()
 	})

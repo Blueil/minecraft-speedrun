@@ -10,6 +10,6 @@ export interface Configuration {
 	LOAD_WORLD: string
 	AUTO_RESTART: boolean
 	IGT: boolean
-	AUCTION_BAR_IGT: boolean
+	ACTION_BAR_IGT: boolean
 	ALTERNATIVE_START: boolean
 }
