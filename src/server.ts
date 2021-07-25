@@ -8,7 +8,13 @@ async function startServer() {
 	setupErrorListeners()
 
 	const configuration = await parseConfiguration()
-	const { MIN_RAM, MAX_RAM, OP, WHITELIST, DATA_PACK, SEEDS, AUTO_SAVE, KEEP_WORLDS, LOAD_WORLD } = configuration
+	const { MIN_RAM, MAX_RAM, OP, WHITELIST, DATA_PACK, SEEDS, AUTO_SAVE, KEEP_WORLDS, LOAD_WORLD, AUTO_RESTART, IGT, AUCTION_BAR_IGT, ALTERNATIVE_START } = configuration
+
+	var time = null
+	var endCheck = null
+	var timerUpdate = null
+	var endVisited = false
+	var runDone = false
 
 	if (LOAD_WORLD) {
 		await setWorld(LOAD_WORLD)
@@ -45,13 +51,44 @@ async function startServer() {
 				shell.cp("-Rf", "datapacks/.", "world/datapacks")
 				server.stdin.write("/reload\n")
 			}
+		} else if (IGT) {
+			if (data.includes('Set the time to 0') && !runDone) {
+				time = Date.now();
+				server.stdin.write(`/tellraw @a "§dTime started at §a` + new Date().toLocaleTimeString() + `"\n`)
+				if (AUCTION_BAR_IGT) timerUpdate = setInterval(async function(){server.stdin.write(`/title @a actionbar "§dTime: §a` + msToTime(Date.now() - time, false) + `"\n`)}, 1000)
+			} else if (ALTERNATIVE_START && data.includes('start run') && !runDone) {
+				server.stdin.write(`/time set 0t\n`)
+			} else if (data.includes('has made the advancement [The End?]') && !endVisited) {
+				endVisited = true
+				endCheck = setInterval(async function(){server.stdin.write(`/execute as @a[nbt={Dimension:"minecraft:the_end"}] at @s if block ~ ~ ~ minecraft:end_portal\n`)}, 50)
+			} else if (data.includes('Test passed') && !runDone) {
+				runDone = true
+				clearInterval(endCheck)
+				if (AUCTION_BAR_IGT) clearInterval(timerUpdate)
+				server.stdin.write(`/tellraw @a "§dTime ended at §a` + msToTime(Date.now() - time, true) + `"\n`)
+			}
 		}
 	})
 
 	server.on("exit", async () => {
+		clearInterval(endCheck)
+		if (AUCTION_BAR_IGT) clearInterval(timerUpdate)
 		server.kill()
-		await startServer()
+		if (AUTO_RESTART) await startServer()
 	})
+}
+
+function msToTime(duration, ms) {
+	var milliseconds = Math.floor((duration % 1000) / 100),
+	  seconds = Math.floor((duration / 1000) % 60),
+	  minutes = Math.floor((duration / (1000 * 60)) % 60),
+	  hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+  
+	hours = (hours < 10) ? 0 + hours : hours;
+	minutes = (minutes < 10) ? 0 + minutes : minutes;
+	seconds = (seconds < 10) ? 0 + seconds : seconds;
+  
+	return hours + ":" + minutes + ":" + seconds + (ms ?  "." + milliseconds : "");
 }
 
 function setupErrorListeners() {
