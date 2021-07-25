@@ -19,7 +19,7 @@ This project provides a better startup for a speedrun server as it can automatic
 -   JRE 8 installed https://www.java.com/download/
 -   Node LTS installed https://nodejs.org/en/download/
 -   Working Vanilla Minecraft Server
--   `speedrun.json`, `Server.bat`/`Server.sh` and `server.js` downloaded https://github.com/NearW/minecraft-speedrun/releases/latest
+-   `speedrun.json`, `Server.bat`/`Server.sh` and `server.js` downloaded https://github.com/Blueil/minecraft-speedrun/releases/latest
 
 ## Usage
 
