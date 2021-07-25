@@ -5,14 +5,14 @@ This project provides a better startup for a speedrun server as it can automatic
 
 -   Delete the world folder after stopping the server
 -   Rename the world folder after stopping the server to persist previously played worlds
--   Restart the server
+-   Toggleable auto restart server
 -   Turn off auto-save to prevent the lag every 5 minutes
 -   Move datapacks to the world folder
 -   Set the seed from a list of seeds sequentially
 -   Load a specific world for All Advancement runs
 -   IGT Timer
 -   IGT Timer in actionbar
--   IGT start when "start run" is typed in chat
+-   Start IGT timer when "start run" is typed in chat
 
 ## Prerequisites
 
